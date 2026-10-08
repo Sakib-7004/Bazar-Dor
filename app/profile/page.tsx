@@ -1,0 +1,4 @@
+"use client";
+import Link from "next/link"; import {useEffect,useState} from "react"; import {authClient} from "@/lib/auth-client"; import AuthGuard from "@/components/AuthGuard";
+export default function Profile(){return <AuthGuard><ProfileContent/></AuthGuard>}
+function ProfileContent(){const [user,setUser]=useState<any>(null);useEffect(()=>{authClient.getSession().then(r=>setUser(r.data?.user))},[]);return <main className="max-w-3xl mx-auto px-4 py-12"><div className="bg-white border rounded-3xl p-8"><h1 className="text-3xl font-black">আমার প্রোফাইল</h1><div className="mt-7 space-y-4"><div><p className="text-sm text-gray-500">নাম</p><p className="text-xl font-bold">{user?.name||"লোড হচ্ছে..."}</p></div><div><p className="text-sm text-gray-500">ইমেইল</p><p>{user?.email||"লোড হচ্ছে..."}</p></div></div><Link href="/profile/update" className="inline-block mt-7 bg-[#0f7a4b] text-white px-5 py-3 rounded-xl font-bold">তথ্য আপডেট করুন</Link></div></main>}
