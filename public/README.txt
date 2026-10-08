@@ -1,0 +1,1 @@
+Static assets can be placed in this folder. The assignment hero and logo are referenced from the supplied public GitHub repository.

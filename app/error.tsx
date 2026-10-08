@@ -1,0 +1,2 @@
+"use client";
+export default function ErrorPage({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main className="min-h-[60vh] flex items-center justify-center text-center px-4"><div><h1 className="text-4xl font-black">কিছু একটা সমস্যা হয়েছে</h1><p className="text-gray-500 mt-3">ডেটা লোড করতে সমস্যা হয়েছে।</p><button onClick={()=>reset()} className="mt-6 bg-[#0f7a4b] text-white px-5 py-3 rounded-xl">আবার চেষ্টা করুন</button></div></main>}
