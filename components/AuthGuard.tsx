@@ -1,0 +1,3 @@
+"use client";
+import {useEffect,useState} from "react"; import {useRouter} from "next/navigation"; import {authClient} from "@/lib/auth-client"; import toast from "react-hot-toast";
+export default function AuthGuard({children}:{children:React.ReactNode}){const [loading,setLoading]=useState(true);const router=useRouter();useEffect(()=>{authClient.getSession().then(r=>{if(!r.data){toast.error("এই পেজ দেখতে সাইন ইন করুন");router.replace("/signin?next="+encodeURIComponent(location.pathname));}else setLoading(false);});},[router]);if(loading)return <div className="min-h-[50vh] flex items-center justify-center"><div className="animate-spin h-10 w-10 rounded-full border-4 border-gray-200 border-t-[#0f7a4b]"/></div>;return <>{children}</>}
