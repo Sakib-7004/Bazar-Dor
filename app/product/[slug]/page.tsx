@@ -2,7 +2,7 @@ import {notFound} from "next/navigation";
 import AuthGuard from "@/components/AuthGuard";
 import {getProduct,getProducts,bn,productPrice,Product,numberValue,productSlug} from "@/lib/api";
 
-export async function generateStaticParams(){
+export const dynamicParams = false;\n\nexport async function generateStaticParams(){
   try{
     const products=await getProducts();
     return products.map((p:Product)=>({slug:productSlug(p)}));
