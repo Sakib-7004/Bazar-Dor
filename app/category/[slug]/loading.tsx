@@ -1,0 +1,1 @@
+import Skeleton from "@/components/Skeleton"; export default function Loading(){return <main className="max-w-6xl mx-auto px-4 py-12"><div className="h-12 w-64 bg-gray-200 rounded animate-pulse mb-8"/><Skeleton/></main>}
