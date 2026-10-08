@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>বাজার দর | BazarDor</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f8f4;color:#18221d;font-family:Arial,system-ui,sans-serif}
+a{text-decoration:none;color:inherit}.wrap{max-width:1150px;margin:auto;padding:0 18px}
+header{background:#fff;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px #00000010}
+.top{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 0}.logo{display:flex;align-items:center;gap:10px}.logo b{font-size:26px;color:#0f7a4b}.logo small{display:block;color:#777}
+nav{border-top:1px solid #eee;border-bottom:1px solid #eee;overflow:auto;white-space:nowrap}nav .wrap{display:flex;gap:10px;padding-top:10px;padding-bottom:10px}nav button{border:0;background:#f1f5ef;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:700}
+.ticker{background:#0f7a4b;color:#fff;overflow:hidden}.ticker-inner{display:flex;width:max-content;animation:ticker 28s linear infinite}.ticker span{padding:9px 25px;white-space:nowrap}@keyframes ticker{to{transform:translateX(-50%)}}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:25px;align-items:center;padding:55px 0}.hero h1{font-size:52px;line-height:1.08;margin:8px 0}.hero p{font-size:18px;color:#66706a;line-height:1.7}.hero-card{background:#eaf3df;border-radius:30px;padding:50px;text-align:center;font-size:110px}
+section{padding:20px 0 45px}.title{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}.title h2{font-size:30px;margin:0}.title p{color:#777}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:1px solid #e7ece4;border-radius:20px;padding:15px;box-shadow:0 3px 12px #00000008}.pic{height:145px;background:#f4f7ef;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:65px}.card h3{font-size:19px;margin:15px 0 3px}.unit{font-size:13px;color:#777}.price-row{display:flex;justify-content:space-between;align-items:end;margin-top:16px}.price{font-size:21px;font-weight:900;color:#0f7a4b}.change{padding:6px 9px;border-radius:999px;font-size:13px;font-weight:800}.up{background:#e9f8ee;color:#159447}.down{background:#ffeded;color:#d12d2d}.flat{background:#eee;color:#777}
+.sort{padding:12px;border:1px solid #ddd;border-radius:10px;background:#fff}.loading{padding:50px;text-align:center;color:#777}.error{background:#fff4f4;color:#a11;padding:20px;border-radius:15px}
+footer{background:#123d2b;color:#fff;margin-top:30px;padding:35px 0}footer p{color:#c9d7cf}
+@media(max-width:800px){.hero{grid-template-columns:1fr;padding:35px 0}.hero h1{font-size:40px}.hero-card{padding:30px}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.top{align-items:flex-start}.grid{grid-template-columns:1fr}.hero h1{font-size:34px}.hero-card{font-size:80px}}
+</style>
+</head>
+<body>
+<header><div class="wrap top"><a class="logo" href="#"><span style="font-size:34px">🛒</span><span><b>বাজার দর</b><small>আজকের বাজারের তথ্য</small></span></a><a href="https://github.com/Sakib-7004/Bazar-Dor" style="background:#0f7a4b;color:white;padding:10px 15px;border-radius:10px">GitHub</a></div>
+<nav><div class="wrap"><button onclick="loadProducts()">সব পণ্য</button><button onclick="filterCategory('chal')">চাল</button><button onclick="filterCategory('vegetables')">সবজি</button><button onclick="filterCategory('fish')">মাছ</button><button onclick="filterCategory('meat')">মাংস</button><button onclick="filterCategory('oil')">তেল</button></div></nav>
+<div class="ticker"><div id="ticker" class="ticker-inner"></div></div></header>
+<main class="wrap"><div class="hero"><div><div style="color:#0f7a4b;font-weight:800">আজকের বাজারদর</div><h1>প্রয়োজনীয় পণ্যের দাম এক নজরে</h1><p>বাংলাদেশের দৈনন্দিন পণ্যের দাম, দাম বাড়া-কমা এবং ক্যাটাগরি অনুযায়ী তথ্য সহজে দেখুন।</p><a href="#products" style="display:inline-block;background:#0f7a4b;color:white;padding:13px 20px;border-radius:12px;font-weight:800">সব পণ্য দেখুন</a></div><div class="hero-card">🥬<br><span style="font-size:22px;font-weight:800;color:#0f7a4b">আজকের বাজার</span></div></div>
+<section><div class="title"><div><h2>আজ দাম বেড়েছে ▲</h2><p>যেসব পণ্যের দাম তুলনামূলক বেশি</p></div></div><div id="up" class="grid"><div class="loading">ডেটা লোড হচ্ছে...</div></div></section>
+<section><div class="title"><div><h2>আজ দাম কমেছে ▼</h2><p>যেসব পণ্যের দাম তুলনামূলক কম</p></div></div><div id="down" class="grid"><div class="loading">ডেটা লোড হচ্ছে...</div></div></section>
+<section id="products"><div class="title"><div><h2 id="heading">সব পণ্য</h2><p>API থেকে পাওয়া বর্তমান তথ্য</p></div><select class="sort" onchange="sortProducts(this.value)"><option value="default">ডিফল্ট</option><option value="low">দাম: কম থেকে বেশি</option><option value="high">দাম: বেশি থেকে কম</option></select></div><div id="products-grid" class="grid"><div class="loading">ডেটা লোড হচ্ছে...</div></div></section>
+</main><footer><div class="wrap"><b style="font-size:22px">বাজার দর</b><p>এটি GitHub Pages-এর জন্য প্রকাশিত static public version। Full Next.js + Better Auth version এই একই repository-তে রয়েছে এবং server hosting প্রয়োজন।</p></div></footer>
+<script>
+const API='https://api.api-store.workers.dev/api/bazardor';let all=[];let current=[];
+const bn=n=>new Intl.NumberFormat('bn-BD').format(Number(String(n??0).replace(/[^0-9.-]/g,''))||0);
+const price=p=>Number(p.price??p.currentPrice??p.averagePrice??0)||0;
+const change=p=>Number(p.changePercent??p.change??0)||0;
+const name=p=>p.name??p.title??'পণ্য';
+const slug=p=>String(p.slug??p.id);
+function card(p){let c=change(p),cl=c>0?'up':c<0?'down':'flat';return '<div class="card"><a href="#product-'+slug(p)+'"><div class="pic">'+(p.emoji||'🛒')+'</div><h3>'+name(p)+'</h3><div class="unit">'+(p.unit||'প্রতি কেজি')+'</div><div class="price-row"><div><div style="font-size:12px;color:#777">আজকের দাম</div><div class="price">'+bn(price(p))+' টাকা</div></div><span class="change '+cl+'">'+(c>0?'▲ ':c<0?'▼ ':'— ')+bn(Math.abs(c))+'%</span></div></a></div>'}
+async function get(path=''){let r=await fetch(API+path);if(!r.ok)throw Error('API error');let d=await r.json();return Array.isArray(d)?d:(d.products||d.data||[])}
+function render(){document.getElementById('products-grid').innerHTML=current.length?current.map(card).join(''):'<div class="error">এই ক্যাটাগরিতে এখন কোনো পণ্য পাওয়া যায়নি।</div>';let up=[...all].sort((a,b)=>change(b)-change(a)).slice(0,6),down=[...all].sort((a,b)=>change(a)-change(b)).slice(0,6);document.getElementById('up').innerHTML=up.length?up.map(card).join(''):'<div class="loading">কোনো তথ্য নেই</div>';document.getElementById('down').innerHTML=down.length?down.map(card).join(''):'<div class="loading">কোনো তথ্য নেই</div>';document.getElementById('ticker').innerHTML=[...all,...all].map(p=>'<span>'+(p.emoji||'🛒')+' '+name(p)+' · '+bn(price(p))+' টাকা · '+(change(p)>=0?'▲':'▼')+' '+bn(Math.abs(change(p)))+'%</span>').join('')}
+async function loadProducts(){document.getElementById('heading').textContent='সব পণ্য';try{all=await get();current=[...all];render()}catch(e){document.getElementById('products-grid').innerHTML='<div class="error">API ডেটা লোড করা যায়নি। কিছুক্ষণ পরে আবার চেষ্টা করুন।</div>'}}
+async function filterCategory(c){document.getElementById('heading').textContent=c;try{current=await get('/products?category='+encodeURIComponent(c));render();document.getElementById('products').scrollIntoView({behavior:'smooth'})}catch(e){document.getElementById('products-grid').innerHTML='<div class="error">ক্যাটাগরি ডেটা লোড করা যায়নি।</div>'}}
+function sortProducts(v){let x=[...current];if(v==='low')x.sort((a,b)=>price(a)-price(b));if(v==='high')x.sort((a,b)=>price(b)-price(a));document.getElementById('products-grid').innerHTML=x.map(card).join('')}
+loadProducts();
+</script></body></html>
