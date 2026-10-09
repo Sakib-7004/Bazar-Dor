@@ -33,7 +33,22 @@ const price=p=>Number(p.price??p.currentPrice??p.averagePrice??0)||0;
 const change=p=>Number(p.changePercent??p.change??0)||0;
 const name=p=>p.name??p.title??'পণ্য';
 const slug=p=>String(p.slug??p.id);
-function card(p){let c=change(p),cl=c>0?'up':c<0?'down':'flat';return '<div class="card"><a href="#product-'+slug(p)+'"><div class="pic">'+(p.emoji||'🛒')+'</div><h3>'+name(p)+'</h3><div class="unit">'+(p.unit||'প্রতি কেজি')+'</div><div class="price-row"><div><div style="font-size:12px;color:#777">আজকের দাম</div><div class="price">'+bn(price(p))+' টাকা</div></div><span class="change '+cl+'">'+(c>0?'▲ ':c<0?'▼ ':'— ')+bn(Math.abs(c))+'%</span></div></a></div>'}
+const photoRules=[
+ {words:['rice','chal','চাল'],url:'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80'},
+ {words:['lentil','dal','ডাল'],url:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80'},
+ {words:['onion','পেঁয়াজ','পিয়াজ'],url:'https://images.unsplash.com/photo-1508747703725-719777637510?auto=format&fit=crop&w=800&q=80'},
+ {words:['potato','আলু'],url:'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=80'},
+ {words:['tomato','টমেটো'],url:'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=800&q=80'},
+ {words:['chili','chilli','মরিচ'],url:'https://images.unsplash.com/photo-1588252303782-cb80119abd6?auto=format&fit=crop&w=800&q=80'},
+ {words:['fish','মাছ','ইলিশ','রুই','পাঙ্গাস'],url:'https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=800&q=80'},
+ {words:['chicken','meat','মাংস','মুরগি','গরু'],url:'https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=800&q=80'},
+ {words:['egg','ডিম'],url:'https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=800&q=80'},
+ {words:['oil','তেল'],url:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800&q=80'},
+ {words:['garlic','রসুন'],url:'https://images.unsplash.com/photo-1615477550927-6ec8445f4d7e?auto=format&fit=crop&w=800&q=80'},
+ {words:['ginger','আদা'],url:'https://images.unsplash.com/photo-1615485500704-8e990f9900f2?auto=format&fit=crop&w=800&q=80'}
+];
+function productPhoto(p){let text=(name(p)+' '+(p.category||'')).toLowerCase();let item=photoRules.find(x=>x.words.some(w=>text.includes(w.toLowerCase())));return item?item.url:''}
+function card(p){let c=change(p),cl=c>0?'up':c<0?'down':'flat',img=productPhoto(p),v=price(p);return '<div class="card"><a href="#product-'+slug(p)+'"><div class="pic">'+(img?'<img src="'+img+'" alt="'+name(p)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:15px" onerror="this.style.display=\'none\'">':(p.emoji||'🛒'))+'</div><h3>'+name(p)+'</h3><div class="unit">'+(p.unit||'প্রতি কেজি')+'</div><div class="price-row"><div><div style="font-size:12px;color:#777">আজকের দাম</div><div class="price">'+(v>0?bn(v)+' টাকা':'দাম পাওয়া যায়নি')+'</div></div><span class="change '+cl+'">'+(c>0?'▲ ':c<0?'▼ ':'— ')+bn(Math.abs(c))+'%</span></div><div style="font-size:11px;color:#999;margin-top:10px">API বাজারদর</div></a></div>'}
 async function get(path=''){let r=await fetch(API+path);if(!r.ok)throw Error('API error');let d=await r.json();return Array.isArray(d)?d:(d.products||d.data||[])}
 function render(){document.getElementById('products-grid').innerHTML=current.length?current.map(card).join(''):'<div class="error">এই ক্যাটাগরিতে এখন কোনো পণ্য পাওয়া যায়নি।</div>';let up=[...all].sort((a,b)=>change(b)-change(a)).slice(0,6),down=[...all].sort((a,b)=>change(a)-change(b)).slice(0,6);document.getElementById('up').innerHTML=up.length?up.map(card).join(''):'<div class="loading">কোনো তথ্য নেই</div>';document.getElementById('down').innerHTML=down.length?down.map(card).join(''):'<div class="loading">কোনো তথ্য নেই</div>';document.getElementById('ticker').innerHTML=[...all,...all].map(p=>'<span>'+(p.emoji||'🛒')+' '+name(p)+' · '+bn(price(p))+' টাকা · '+(change(p)>=0?'▲':'▼')+' '+bn(Math.abs(change(p)))+'%</span>').join('')}
 async function loadProducts(){document.getElementById('heading').textContent='সব পণ্য';try{all=await get();current=[...all];render()}catch(e){document.getElementById('products-grid').innerHTML='<div class="error">API ডেটা লোড করা যায়নি। কিছুক্ষণ পরে আবার চেষ্টা করুন।</div>'}}
