@@ -1,5 +1,15 @@
 import { toNextJsHandler } from "better-auth/next-js";
 import { auth } from "@/lib/auth";
+import { ensureAuthSchema } from "@/lib/auth-db";
 
-// Better Auth handles sign-in, sign-up, sessions, and social login here.
-export const { GET, POST } = toNextJsHandler(auth);
+const handlers = toNextJsHandler(auth);
+
+export async function GET(request: Request) {
+  await ensureAuthSchema();
+  return handlers.GET(request);
+}
+
+export async function POST(request: Request) {
+  await ensureAuthSchema();
+  return handlers.POST(request);
+}
