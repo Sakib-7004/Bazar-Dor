@@ -3,37 +3,52 @@ import { notFound } from "next/navigation";
 import SortProducts from "@/components/SortProducts";
 import { getProducts, getCategories, Product } from "@/lib/api";
 
-const validCategories = ["chal", "vegetables", "fish", "meat", "oil"];
+function slugify(value: unknown) {
+  return String(value ?? "")
+    .normalize("NFKD")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-|-$/g, "");
+}
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!validCategories.includes(slug.toLowerCase())) notFound();
+  let categories: any[];
 
+  try {
+    categories = await getCategories();
+  } catch {
+    return (
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        <div className="rounded-2xl border bg-white p-8 text-center">
+          <p className="text-xl font-bold">ক্যাটাগরির তথ্য লোড করা যায়নি</p>
+          <Link href="/" className="inline-block mt-5 rounded-xl bg-[#0f7a4b] px-5 py-3 text-white">হোম পেজে ফিরে যান</Link>
+        </div>
+      </main>
+    );
+  }
+
+  const category = categories.find((item: any) =>
+    [item.slug, item.id, item.name, item.category]
+      .some((value) => slugify(value) === slugify(slug))
+  );
+  if (!category) notFound();
+
+  const apiCategoryValue = category.slug ?? category.id ?? category.name ?? category.category;
   let products: Product[] = [];
-  let categories: any[] = [];
   let failed = false;
   try {
-    [products, categories] = await Promise.all([getProducts(slug), getCategories()]);
+    products = await getProducts(String(apiCategoryValue));
   } catch {
     failed = true;
   }
 
-  const category = categories.find((item: any) =>
-    String(item.slug ?? item.id ?? item.name).toLowerCase() === slug.toLowerCase()
-  );
-  const title = category?.name || ({
-    chal: "চাল",
-    vegetables: "সবজি",
-    fish: "মাছ",
-    meat: "মাংস",
-    oil: "তেল",
-  } as Record<string, string>)[slug];
-
   return (
     <main className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
       <div className="mb-8">
-        <p className="text-5xl">{category?.emoji || "🛒"}</p>
-        <h1 className="text-3xl sm:text-4xl font-black mt-3">{title}</h1>
+        <p className="text-5xl">{category.emoji || "🛒"}</p>
+        <h1 className="text-3xl sm:text-4xl font-black mt-3">{category.name || category.category || String(apiCategoryValue)}</h1>
         <p className="text-gray-500 mt-2">এই ক্যাটাগরির পণ্য ও আজকের দাম।</p>
       </div>
       {failed ? (
