@@ -2,9 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  output: "export",
-  basePath: process.env.NODE_ENV === "production" ? "/Bazar-Dor" : "",
-  assetPrefix: process.env.NODE_ENV === "production" ? "/Bazar-Dor/" : "",
+  // Keep Next.js server features enabled for dynamic product pages and Better Auth.
+  // GitHub Pages uses the separate static public/index.html workflow.
   images: { unoptimized: true },
 };
 
