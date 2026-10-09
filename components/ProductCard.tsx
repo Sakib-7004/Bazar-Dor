@@ -6,11 +6,11 @@ import { Product, bn, productChange, productPrice, productSlug } from "@/lib/api
 // Product-specific photos. Prices still come from the live product API.
 const productPhotos: Array<{ words: string[]; image: string }> = [
   { words: ["rice", "chal", "চাল"], image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80" },
-  { words: ["lentil", "dal", "ডাল"], image: "https://images.unsplash.com/photo-1515543904379-3d757台f3f5?auto=format&fit=crop&w=800&q=80" },
+  { words: ["lentil", "dal", "ডাল"], image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" },
   { words: ["onion", "পেঁয়াজ", "পিয়াজ"], image: "https://images.unsplash.com/photo-1508747703725-719777637510?auto=format&fit=crop&w=800&q=80" },
   { words: ["potato", "আলু"], image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=80" },
   { words: ["tomato", "টমেটো"], image: "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=800&q=80" },
-  { words: ["chili", "chilli", "মরিচ", "কাঁচামরিচ"], image: "https://images.unsplash.com/photo-1588252303782-cb80119 abd6?auto=format&fit=crop&w=800&q=80" },
+  { words: ["chili", "chilli", "মরিচ", "কাঁচামরিচ"], image: "https://images.unsplash.com/photo-1588252303782-cb80119abd6?auto=format&fit=crop&w=800&q=80" },
   { words: ["fish", "মাছ", "ইলিশ", "রুই", "পাঙ্গাস"], image: "https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=800&q=80" },
   { words: ["chicken", "meat", "মাংস", "মুরগি", "গরু"], image: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=800&q=80" },
   { words: ["egg", "ডিম"], image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=800&q=80" },
