@@ -1,1 +1,30 @@
-{"name":"bazar-dor","version":"1.0.0","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start","lint":"next lint"},"dependencies":{"@tailwindcss/postcss":"^4.1.14","better-auth":"^1.7.7","better-sqlite3":"^12.4.1","next":"15.5.26","react":"19.1.0","react-dom":"19.1.0","react-hot-toast":"^2.6.0","tailwindcss":"^4.1.14"},"devDependencies":{"@types/better-sqlite3":"^7.6.13","@types/node":"^22.15.0","@types/react":"^19.1.0","@types/react-dom":"^19.1.0","typescript":"^5.9.0"}}
+{
+  "name": "bazar-dor",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "better-auth": "^1.7.7",
+    "better-sqlite3": "^12.4.1",
+    "next": "15.5.26",
+    "pg": "^8.16.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.0",
+    "@types/pg": "^8.15.5",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.9.0"
+  }
+}
