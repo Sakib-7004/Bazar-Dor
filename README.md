@@ -21,7 +21,7 @@
 - **TypeScript** — types for product and application data
 - **Tailwind CSS 4** — responsive styling
 - **Better Auth** — sessions, email/password authentication, and social login
-- **better-sqlite3** — local database adapter for Better Auth
+- **better-sqlite3** — local SQLite database for Better Auth
 - **react-hot-toast** — success and error notifications
 - **BazarDor REST API** — product, category, and price information
 
@@ -44,16 +44,21 @@ Create `.env.local` in the project root. Never commit real secrets.
 ```env
 BETTER_AUTH_SECRET=replace-with-a-long-random-secret
 BETTER_AUTH_URL=http://localhost:3000
+DATABASE_PATH=./database.sqlite
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 ```
 
+Use a unique secret with at least 32 characters. Email/password sign-up and sign-in use the local SQLite database. The app initializes Better Auth's database schema on the first auth request.
+
 Google and GitHub sign-in require OAuth applications and their matching client IDs/secrets. Register these local callback URLs with the providers:
 
 - Google: `http://localhost:3000/api/auth/callback/google`
 - GitHub: `http://localhost:3000/api/auth/callback/github`
+
+If these credentials are empty, the social buttons show a setup message instead of submitting a broken OAuth request.
 
 ### 4. Start the development server
 
@@ -63,11 +68,11 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-> If your Better Auth version requires database migrations, follow its current setup guide before testing sign-up. Keep `.env.local` and the generated SQLite database private.
+Keep `.env.local` and the generated SQLite database private. For production, use a host with persistent disk storage for SQLite or configure a production-ready database adapter before deployment.
 
 ## 🌐 Deployment notes
 
-- **Full application:** deploy the Next.js app to a Node.js-capable host such as Vercel. Configure all environment variables there. This is required for Better Auth, protected routes, and dynamic product pages.
+- **Full application:** deploy the Next.js app to a Node.js-capable host such as Vercel. Configure all environment variables there. SQLite file persistence must be supported by the host for user accounts to survive redeployments.
 - **GitHub Pages:** the repository also contains a static demo in `public/index.html`. GitHub Pages is static hosting, so it cannot run the Better Auth server or server-rendered dynamic routes. The static demo and full app do not have identical features.
 
 ## 📁 Beginner-friendly project structure
@@ -77,6 +82,7 @@ Open `http://localhost:3000`.
 - `lib/api.ts` — product API requests and Bengali number helpers
 - `lib/auth.ts` — Better Auth server configuration
 - `lib/auth-client.ts` — Better Auth browser client
+- `lib/auth-db.ts` — automatic Better Auth schema initialization
 - `public/` — static assets and the GitHub Pages demo
 
 ## ℹ️ Assignment notes
