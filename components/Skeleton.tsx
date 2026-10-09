@@ -1,1 +1,28 @@
-export default function Skeleton({count=6}:{count?:number}){return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">{Array.from({length:count}).map((_,i)=><div key={i} className="h-72 rounded-2xl bg-white animate-pulse border border-gray-100"><div className="h-36 bg-gray-200 rounded-t-2xl"/><div className="p-5 space-y-3"><div className="h-5 bg-gray-200 rounded"/><div className="h-4 bg-gray-200 rounded w-2/3"/><div className="h-8 bg-gray-200 rounded"/></div></div>)}</div>}
+export default function Skeleton({ count = 6 }: { count?: number }) {
+  return (
+    <div
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4"
+      role="status"
+      aria-label="পণ্যের তথ্য লোড হচ্ছে"
+    >
+      {Array.from({ length: count }).map((_, index) => (
+        <div
+          key={index}
+          className="overflow-hidden rounded-2xl border border-gray-100 bg-white p-3 sm:p-4"
+          aria-hidden="true"
+        >
+          <div className="skeleton h-28 sm:h-36" />
+          <div className="space-y-3 p-2 pt-4">
+            <div className="skeleton h-5 w-3/4" />
+            <div className="skeleton h-4 w-1/2" />
+            <div className="flex items-center justify-between gap-3 pt-2">
+              <div className="skeleton h-7 w-24" />
+              <div className="skeleton h-7 w-16 rounded-full" />
+            </div>
+          </div>
+        </div>
+      ))}
+      <span className="sr-only">পণ্যের তথ্য লোড হচ্ছে...</span>
+    </div>
+  );
+}
