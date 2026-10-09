@@ -1,9 +1,40 @@
 @import "tailwindcss";
 
-:root{--green:#0f7a4b;--light:#f6f8f4;--red:#dc2626}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--light);color:#18221d;font-family:Arial,Helvetica,sans-serif}
-button,a{transition:all .2s ease}
-.ticker-track{display:flex;width:max-content;animation:ticker 28s linear infinite}
-@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+:root {
+  --green: #0f7a4b;
+  --light: #f6f8f4;
+  --red: #dc2626;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 7rem; }
+body {
+  margin: 0;
+  background: var(--light);
+  color: #18221d;
+  font-family: Arial, Helvetica, sans-serif;
+  min-width: 320px;
+}
+button, a, input, select { transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease; }
+button, select { cursor: pointer; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid #84cc16;
+  outline-offset: 3px;
+}
+img { max-width: 100%; height: auto; }
+.ticker-track { display: flex; width: max-content; animation: ticker 28s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.skeleton {
+  background: linear-gradient(90deg, #edf0ea 25%, #f8faf6 50%, #edf0ea 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: .85rem;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+@media (max-width: 640px) {
+  html { scroll-padding-top: 9rem; }
+  .ticker-track { animation-duration: 36s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
